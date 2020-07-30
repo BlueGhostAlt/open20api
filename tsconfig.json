@@ -2,7 +2,7 @@
     "compilerOptions": {
         "strict": true,
         "target": "ES5",
-        "module": "ESNext",
+        "module": "CommonJS",
         "noImplicitAny": true,
         "noImplicitThis": true,
         "esModuleInterop": true,
