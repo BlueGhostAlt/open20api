@@ -1,6 +1,8 @@
 type Code = number
 type ID = number
 
-export type State = { codes?: Record<Code, { host: ID; guests: ID[] }> } & {
+export type State = {
+    codes?: Record<Code, { name: string; host: ID; guests: ID[] }>
+} & {
     lastId: ID
 }
