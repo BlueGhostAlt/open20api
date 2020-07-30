@@ -11,7 +11,8 @@
         "downlevelIteration": true,
         "strictBindCallApply": true,
         "allowSyntheticDefaultImports": true,
-        "strictPropertyInitialization": true
+        "strictPropertyInitialization": true,
+        "outDir": "dist"
     },
     "include": ["src/**/*.ts"],
     "exclude": ["node_modules"]
