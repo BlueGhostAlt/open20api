@@ -10,7 +10,7 @@ export interface Context {
     data: object
 }
 
-const state: State = { lastId: 0 }
+const state: State = { codes: {}, lastId: 0 }
 
 wss.on("connection", ws => {
     ws.on("message", message => {
