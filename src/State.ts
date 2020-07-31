@@ -13,3 +13,8 @@ export type State = {
     lastId: ID
     freeCodes: number[]
 }
+
+const freeCodes = Array(1000000)
+    .fill(undefined)
+    .map((_, i) => i)
+export const state: State = { codes: {}, lastId: 0, freeCodes }

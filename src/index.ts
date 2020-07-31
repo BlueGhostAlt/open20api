@@ -7,17 +7,12 @@ const wss = new WebSocket.Server({ port }, () =>
 )
 
 import * as handlers from "./handlers"
-import { State } from "./State"
+import { state } from "./State"
 
 export interface Context {
     type: keyof typeof handlers
     data: object
 }
-
-const freeCodes = Array(1000000)
-    .fill(undefined)
-    .map((_, i) => i)
-const state: State = { codes: {}, lastId: 0, freeCodes }
 
 wss.on("connection", ws => {
     const id = state.lastId++
