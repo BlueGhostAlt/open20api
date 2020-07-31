@@ -1,6 +1,6 @@
 import WebSocket from "ws"
 
-import { Context } from "../"
+import { Context } from ".."
 import { State } from "../State"
 
 import { randomInt } from "../utils/randomInt"
@@ -31,14 +31,14 @@ export const createClassroom = (
     ws: WebSocket,
     data: Context["data"],
     state: State
-): { code: string } => {
+): { code: string; name: string } => {
     const { name } = data as { name: string }
 
-    const code = createCode(name, state)
+    const numCode = createCode(name, state)
 
-    const strCode = String(code).padStart(6, "0")
+    const code = String(numCode).padStart(6, "0")
 
-    return { code: strCode }
+    return { code, name }
 }
 
 export const joinClassroom = (
