@@ -32,6 +32,4 @@ wss.on("connection", ws => {
             ws.send("Something went wrong ):")
         }
     })
-
-    ws.send("Hello world!")
 })
