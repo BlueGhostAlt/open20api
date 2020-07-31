@@ -3,6 +3,8 @@ import WebSocket from "ws"
 import { Context } from "../"
 import { State } from "../State"
 
+import { randomInt } from "../utils/randomInt"
+
 const freeCodes = Array(1000000).map((_, i) => i)
 
 const useCode = (name: string, state: State): number => {

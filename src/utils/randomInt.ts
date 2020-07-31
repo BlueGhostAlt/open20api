@@ -1,4 +1,4 @@
-const randomInt = (min: number, max: number): number => {
+export const randomInt = (min: number, max: number): number => {
     min = Math.ceil(min)
     max = Math.floor(max)
 
