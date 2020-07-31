@@ -1,5 +1,3 @@
-export {
-    createClassroom,
-    joinClassroom,
-    deleteClassroom
-} from "./message/createClassroom"
+export { createClassroom, joinClassroom } from "./message/createClassroom"
+
+export { deleteClassroom } from "./close/deleteClassroom"

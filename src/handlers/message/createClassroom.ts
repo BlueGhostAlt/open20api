@@ -15,10 +15,6 @@ interface useCodeOptions {
     state: State
     id: ID
 }
-interface freeCodeOptions {
-    code: Code
-    state: State
-}
 interface createClassroomOptions {
     ws: WebSocket
     data: Context["data"]
@@ -31,13 +27,8 @@ interface joinClassroomOptions {
     state: State
     id: ID
 }
-interface deleteClassroomOptions {
-    ws: WebSocket
-    state: State
-    id: ID
-}
 
-const freeCodes = Array(1000000)
+export const freeCodes = Array(1000000)
     .fill(undefined)
     .map((_, i) => i)
 
@@ -57,12 +48,6 @@ const useCode = ({ code, state, id }: useCodeOptions): boolean => {
     }
 
     return false
-}
-
-const freeCode = ({ code, state }: freeCodeOptions): void => {
-    delete state.codes[code]
-
-    freeCodes.push(code)
 }
 
 export const createClassroom = ({
@@ -100,22 +85,4 @@ export const joinClassroom = ({
     const name = state.codes[code].name
 
     return { hasJoined, code, name }
-}
-
-export const deleteClassroom = ({
-    ws,
-    state,
-    id
-}: deleteClassroomOptions): number[] => {
-    const ownedCodes = Object.entries(state.codes)
-        .filter(([_, { host }]) => host === id)
-        .map(([code, _]) => Number(code))
-
-    const affectedGuests = Object.keys(state.codes)
-        .map(Number)
-        .filter(e => ownedCodes.includes(e))
-        .map(code => state.codes[code].guests)
-        .reduce((acc, val) => acc.concat(val), [])
-
-    return affectedGuests
 }
