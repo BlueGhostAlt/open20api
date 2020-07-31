@@ -5,19 +5,34 @@ import { State, Code, ID } from "../State"
 
 import { randomInt } from "../utils/randomInt"
 
+interface createCodeOptions {
+    name: string
+    state: State
+    id: ID
+}
+interface useCodeOptions {
+    code: Code
+    state: State
+    id: ID
+}
+interface createClassroomOptions {
+    ws: WebSocket
+    data: Context["data"]
+    state: State
+    id: ID
+}
+interface joinClassroomOptions {
+    ws: WebSocket
+    data: Context["data"]
+    state: State
+    id: ID
+}
+
 const freeCodes = Array(1000000)
     .fill(undefined)
     .map((_, i) => i)
 
-const createCode = ({
-    name,
-    state,
-    id
-}: {
-    name: string
-    state: State
-    id: ID
-}): number => {
+const createCode = ({ name, state, id }: createCodeOptions): number => {
     const code = freeCodes[randomInt(0, freeCodes.length)]
 
     freeCodes.splice(code, 1)
@@ -26,15 +41,7 @@ const createCode = ({
     return code
 }
 
-const useCode = ({
-    code,
-    state,
-    id
-}: {
-    code: Code
-    state: State
-    id: ID
-}): boolean => {
+const useCode = ({ code, state, id }: useCodeOptions): boolean => {
     if (state.codes[code]) {
         state.codes[code].guests.push(id)
         return true
@@ -43,12 +50,12 @@ const useCode = ({
     return false
 }
 
-export const createClassroom = (
-    ws: WebSocket,
-    data: Context["data"],
-    state: State,
-    id: ID
-): { code: string; name: string } => {
+export const createClassroom = ({
+    ws,
+    data,
+    state,
+    id
+}: createClassroomOptions): { code: string; name: string } => {
     const { name } = data as { name: string }
 
     const numCode = createCode({ name, state, id })
@@ -58,12 +65,14 @@ export const createClassroom = (
     return { code, name }
 }
 
-export const joinClassroom = (
-    ws: WebSocket,
-    data: Context["data"],
-    state: State,
-    id: ID
-): { hasJoined: false } | { hasJoined: true; code: Code; name: string } => {
+export const joinClassroom = ({
+    ws,
+    data,
+    state,
+    id
+}: joinClassroomOptions):
+    | { hasJoined: false }
+    | { hasJoined: true; code: Code; name: string } => {
     const { code: strCode } = data as { code: string }
 
     const code = Number(strCode)

@@ -24,9 +24,11 @@ wss.on("connection", ws => {
             const request = message.toString()
 
             const parsed: Context = JSON.parse(request)
-            const result = handlers[parsed.type](ws, parsed.data, state, id)
+            const { type, data } = parsed
 
-            const response: Context = { type: parsed.type, data: result }
+            const result = handlers[parsed.type]({ ws, data, state, id })
+
+            const response: Context = { type, data: result }
 
             ws.send(JSON.stringify(response))
         } catch {
