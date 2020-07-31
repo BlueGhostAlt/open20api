@@ -36,9 +36,10 @@ export const deleteMeme = ({
         throw new Error("A user who's not a host tried deleting a meme!")
     }
 
-    delete state.codes[code].memes[id]
-
     const classroom = state.codes[code]
+    const index = classroom.memes.findIndex(m => m.id === id)
+    classroom.memes.splice(index, 1)
+
     const users = classroom.guests
         .concat(classroom.host)
         .filter(u => u.id !== id)
