@@ -1,7 +1,7 @@
 import WebSocket from "ws"
 
 import { Context } from "../.."
-import { State, Code, ID, User } from "../../State"
+import { State, Code, ID, User, Meme } from "../../State"
 
 interface useCodeOptions {
     code: Code
@@ -35,7 +35,7 @@ export const joinClassroom = ({
     id
 }: joinClassroomOptions):
     | { hasJoined: false }
-    | { hasJoined: true; code: Code; name: string } => {
+    | { hasJoined: true; code: Code; name: string; memes: Meme[] } => {
     const { code: strCode, username } = data as {
         code: string
         username: string
@@ -50,5 +50,7 @@ export const joinClassroom = ({
 
     const name = state.codes[code].name
 
-    return { hasJoined, code, name }
+    const memes = state.codes[code].memes
+
+    return { hasJoined, code, name, memes }
 }
