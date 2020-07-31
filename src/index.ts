@@ -1,6 +1,10 @@
 import WebSocket from "ws"
 
-const wss = new WebSocket.Server({ port: 8080 })
+const port = Number(process.env.PORT) || 8080
+
+const wss = new WebSocket.Server({ port }, () =>
+    console.log(`WebSockets server started and running on the port ${port}! 🚀`)
+)
 
 import * as handlers from "./handlers"
 import { State } from "./State"
@@ -24,6 +28,8 @@ wss.on("connection", ws => {
             ws.send(response)
         } catch {
             console.info("Oops! Something went wrong")
+
+            ws.send("Something went wrong ):")
         }
     })
 
