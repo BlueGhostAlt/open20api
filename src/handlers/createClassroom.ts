@@ -46,7 +46,7 @@ const createCode = ({ name, state, id }: createCodeOptions): number => {
     const code = freeCodes[randomInt(0, freeCodes.length)]
 
     freeCodes.splice(code, 1)
-    state.codes[code] = { name, host: id, guests: [] }
+    state.codes[code] = { name, host: id, guests: [], memes: [] }
 
     return code
 }
