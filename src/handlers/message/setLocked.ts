@@ -27,6 +27,8 @@ export const setLocked = ({ ws, data, state, id }: setLockedOptions): {} => {
     const users = classroom.guests.map(u => u.id).filter(u => u !== id)
     const sockets = users.map(u => state.sockets.get(u)) as WebSocket[]
 
+    classroom.locked = isLocked
+
     sockets.forEach(ws =>
         ws.send(
             JSON.stringify({

@@ -35,7 +35,13 @@ export const joinClassroom = ({
     id
 }: joinClassroomOptions):
     | { hasJoined: false }
-    | { hasJoined: true; code: Code; name: string; memes: Meme[] } => {
+    | {
+          hasJoined: true
+          code: Code
+          name: string
+          memes: Meme[]
+          isLocked: boolean
+      } => {
     const { code: strCode, username } = data as {
         code: string
         username: string
@@ -48,9 +54,10 @@ export const joinClassroom = ({
         return { hasJoined }
     }
 
-    const name = state.codes[code].name
+    const classroom = state.codes[code]
+    const name = classroom.name
+    const memes = classroom.memes
+    const locked = classroom.locked
 
-    const memes = state.codes[code].memes
-
-    return { hasJoined, code, name, memes }
+    return { hasJoined, code, name, memes, isLocked: locked }
 }

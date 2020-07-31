@@ -17,6 +17,7 @@ export interface Classroom {
     host: Pick<User, "id">
     guests: User[]
     memes: Meme[]
+    locked: boolean
 }
 
 export type State = {
