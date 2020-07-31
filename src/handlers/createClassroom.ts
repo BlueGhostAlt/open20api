@@ -1,7 +1,7 @@
 import WebSocket from "ws"
 
 import { Context } from ".."
-import { State } from "../State"
+import { State, Code, ID } from "../State"
 
 import { randomInt } from "../utils/randomInt"
 
@@ -9,18 +9,34 @@ const freeCodes = Array(1000000)
     .fill(undefined)
     .map((_, i) => i)
 
-const createCode = (name: string, state: State): number => {
+const createCode = ({
+    name,
+    state,
+    id
+}: {
+    name: string
+    state: State
+    id: ID
+}): number => {
     const code = freeCodes[randomInt(0, freeCodes.length)]
 
     freeCodes.splice(code, 1)
-    state.codes[code] = { name, host: state.lastId++, guests: [] }
+    state.codes[code] = { name, host: id, guests: [] }
 
     return code
 }
 
-const useCode = (code: number, state: State): boolean => {
+const useCode = ({
+    code,
+    state,
+    id
+}: {
+    code: Code
+    state: State
+    id: ID
+}): boolean => {
     if (state.codes[code]) {
-        state.codes[code].guests.push(state.lastId++)
+        state.codes[code].guests.push(id)
         return true
     }
 
@@ -30,11 +46,12 @@ const useCode = (code: number, state: State): boolean => {
 export const createClassroom = (
     ws: WebSocket,
     data: Context["data"],
-    state: State
+    state: State,
+    id: ID
 ): { code: string; name: string } => {
     const { name } = data as { name: string }
 
-    const numCode = createCode(name, state)
+    const numCode = createCode({ name, state, id })
 
     const code = String(numCode).padStart(6, "0")
 
@@ -44,11 +61,19 @@ export const createClassroom = (
 export const joinClassroom = (
     ws: WebSocket,
     data: Context["data"],
-    state: State
-): { hasJoined: boolean } => {
-    const { code } = data as { code: string }
+    state: State,
+    id: ID
+): { hasJoined: false } | { hasJoined: true; code: Code; name: string } => {
+    const { code: strCode } = data as { code: string }
 
-    const hasJoined = useCode(Number(code), state)
+    const code = Number(strCode)
+    const hasJoined = useCode({ code, state, id })
 
-    return { hasJoined }
+    if (!hasJoined) {
+        return { hasJoined }
+    }
+
+    const name = state.codes[code].name
+
+    return { hasJoined, code, name }
 }

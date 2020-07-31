@@ -17,12 +17,14 @@ export interface Context {
 const state: State = { codes: {}, lastId: 0 }
 
 wss.on("connection", ws => {
+    const id = state.lastId++
+
     ws.on("message", message => {
         try {
             const request = message.toString()
 
             const parsed: Context = JSON.parse(request)
-            const result = handlers[parsed.type](ws, parsed.data, state)
+            const result = handlers[parsed.type](ws, parsed.data, state, id)
 
             const response: Context = { type: parsed.type, data: result }
 
