@@ -16,6 +16,7 @@ export interface Context {
 
 wss.on("connection", ws => {
     const id = state.lastId++
+    state.sockets.set(id, ws)
 
     ws.on("message", message => {
         try {

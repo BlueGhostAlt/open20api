@@ -1,3 +1,5 @@
+import WebSocket from "ws"
+
 export type Code = number
 export type ID = number
 export interface Meme {
@@ -22,9 +24,17 @@ export type State = {
 } & {
     lastId: ID
     freeCodes: Code[]
+    sockets: Map<ID, WebSocket>
 }
 
 const freeCodes = Array(1000000)
     .fill(undefined)
     .map((_, i) => i)
-export const state: State = { codes: {}, lastId: 0, freeCodes }
+const socketsMap = new Map<ID, WebSocket>()
+
+export const state: State = {
+    codes: {},
+    lastId: 0,
+    freeCodes,
+    sockets: socketsMap
+}
