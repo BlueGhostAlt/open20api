@@ -9,13 +9,22 @@ const freeCodes = Array(1000000)
     .fill(undefined)
     .map((_, i) => i)
 
-const useCode = (name: string, state: State): number => {
+const createCode = (name: string, state: State): number => {
     const code = freeCodes[randomInt(0, freeCodes.length)]
 
     freeCodes.splice(code, 1)
     state.codes[code] = { name, host: state.lastId++, guests: [] }
 
     return code
+}
+
+const useCode = (code: number, state: State): boolean => {
+    if (state.codes[code]) {
+        state.codes[code].guests.push(state.lastId++)
+        return true
+    }
+
+    return false
 }
 
 export const createClassroom = (
@@ -25,9 +34,21 @@ export const createClassroom = (
 ): { code: string } => {
     const { name } = data as { name: string }
 
-    const code = useCode(name, state)
+    const code = createCode(name, state)
 
     const strCode = String(code).padStart(6, "0")
 
     return { code: strCode }
+}
+
+export const joinClassroom = (
+    ws: WebSocket,
+    data: Context["data"],
+    state: State
+): { hasJoined: boolean } => {
+    const { code } = data as { code: number }
+
+    const hasJoined = useCode(code, state)
+
+    return { hasJoined }
 }

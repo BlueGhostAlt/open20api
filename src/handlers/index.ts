@@ -1,1 +1,1 @@
-export { createClassroom } from "./createClassroom"
+export { createClassroom, joinClassroom } from "./createClassroom"
