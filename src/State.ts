@@ -1,17 +1,27 @@
 export type Code = number
 export type ID = number
 export interface Meme {
-    id: number
+    id: ID
     title: string
     username: string
     url: string
 }
+export interface User {
+    id: ID
+    username: string
+}
+export interface Classroom {
+    name: string
+    host: User
+    guests: User[]
+    memes: Meme[]
+}
 
 export type State = {
-    codes: Record<Code, { name: string; host: ID; guests: ID[]; memes: Meme[] }>
+    codes: Record<Code, Classroom>
 } & {
     lastId: ID
-    freeCodes: number[]
+    freeCodes: Code[]
 }
 
 const freeCodes = Array(1000000)

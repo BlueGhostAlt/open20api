@@ -1,12 +1,12 @@
 import WebSocket from "ws"
 
 import { Context } from "../.."
-import { State, Code, ID } from "../../State"
+import { State, Code, ID, User } from "../../State"
 
 interface useCodeOptions {
     code: Code
     state: State
-    id: ID
+    user: User
 }
 interface joinClassroomOptions {
     ws: WebSocket
@@ -15,9 +15,13 @@ interface joinClassroomOptions {
     id: ID
 }
 
-const useCode = ({ code, state, id }: useCodeOptions): boolean => {
+const useCode = ({
+    code,
+    state,
+    user: { id, username }
+}: useCodeOptions): boolean => {
     if (state.codes[code]) {
-        state.codes[code].guests.push(id)
+        state.codes[code].guests.push({ id, username })
         return true
     }
 
@@ -32,10 +36,13 @@ export const joinClassroom = ({
 }: joinClassroomOptions):
     | { hasJoined: false }
     | { hasJoined: true; code: Code; name: string } => {
-    const { code: strCode } = data as { code: string }
+    const { code: strCode, username } = data as {
+        code: string
+        username: string
+    }
 
     const code = Number(strCode)
-    const hasJoined = useCode({ code, state, id })
+    const hasJoined = useCode({ code, state, user: { id, username } })
 
     if (!hasJoined) {
         return { hasJoined }
