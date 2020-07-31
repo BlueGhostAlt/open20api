@@ -41,9 +41,9 @@ export const deleteMeme = ({
     classroom.memes.splice(index, 1)
 
     const users = classroom.guests
-        .concat(classroom.host)
-        .filter(u => u.id !== id)
         .map(u => u.id)
+        .concat(classroom.host.id)
+        .filter(u => u !== id)
     const sockets = users.map(u => state.sockets.get(u)) as WebSocket[]
 
     sockets.forEach(ws =>

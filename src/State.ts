@@ -14,7 +14,7 @@ export interface User {
 }
 export interface Classroom {
     name: string
-    host: User
+    host: Pick<User, "id">
     guests: User[]
     memes: Meme[]
 }

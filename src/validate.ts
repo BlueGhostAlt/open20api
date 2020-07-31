@@ -9,9 +9,9 @@ export const validate = (ctx: Context): boolean => {
     const { type, data } = ctx
 
     if (type === "createClassroom") {
-        const { name, username } = data as { name: string; username: string }
+        const { name } = data as { name: string }
 
-        return hasLength(name) && hasLength(username)
+        return hasLength(name)
     } else if (type === "joinClassroom") {
         const { code: strCode, username } = data as {
             code: string
