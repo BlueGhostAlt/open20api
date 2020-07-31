@@ -46,9 +46,9 @@ export const joinClassroom = (
     data: Context["data"],
     state: State
 ): { hasJoined: boolean } => {
-    const { code } = data as { code: number }
+    const { code } = data as { code: string }
 
-    const hasJoined = useCode(code, state)
+    const hasJoined = useCode(Number(code), state)
 
     return { hasJoined }
 }
