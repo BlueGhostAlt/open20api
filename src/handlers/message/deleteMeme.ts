@@ -38,5 +38,21 @@ export const deleteMeme = ({
 
     delete state.codes[code].memes[id]
 
+    const classroom = state.codes[code]
+    const users = classroom.guests
+        .concat(classroom.host)
+        .filter(u => u.id !== id)
+        .map(u => u.id)
+    const sockets = users.map(u => state.sockets.get(u)) as WebSocket[]
+
+    sockets.forEach(ws =>
+        ws.send(
+            JSON.stringify({
+                type: "deleteMeme",
+                data: { id }
+            })
+        )
+    )
+
     return { id }
 }
