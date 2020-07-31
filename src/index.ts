@@ -43,8 +43,9 @@ wss.on("connection", ws => {
             const response: Context = { type, data: result }
 
             ws.send(JSON.stringify(response))
-        } catch {
+        } catch (err) {
             console.info("Oops! Something went wrong")
+            console.error(err)
 
             ws.send("Something went wrong ):")
         }
