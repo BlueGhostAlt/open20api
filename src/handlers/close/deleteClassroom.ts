@@ -24,7 +24,7 @@ export const deleteClassroom = ({
     id
 }: deleteClassroomOptions): number[] => {
     const ownedCodes = Object.entries(state.codes)
-        .filter(([_, { host }]) => host === id)
+        .filter(([_, { host }]) => host.id === id)
         .map(([code, _]) => Number(code))
 
     const affectedGuests = Object.keys(state.codes)
@@ -35,5 +35,5 @@ export const deleteClassroom = ({
 
     ownedCodes.forEach(code => freeCode({ code, state }))
 
-    return affectedGuests
+    return affectedGuests.map(g => g.id)
 }
