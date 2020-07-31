@@ -15,9 +15,13 @@ const state: State = { codes: {}, lastId: 0 }
 wss.on("connection", ws => {
     ws.on("message", message => {
         try {
-            const parsed: Context = JSON.parse(message.toString())
+            const request = message.toString()
 
-            ws.send(handlers[parsed.type](ws, parsed.data, state))
+            const parsed: Context = JSON.parse(request)
+
+            const response = handlers[parsed.type](ws, parsed.data, state)
+
+            ws.send(response)
         } catch {
             console.info("Oops! Something went wrong")
         }
