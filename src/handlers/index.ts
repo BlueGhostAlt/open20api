@@ -1,1 +1,5 @@
-export { createClassroom, joinClassroom } from "./createClassroom"
+export {
+    createClassroom,
+    joinClassroom,
+    deleteClassroom
+} from "./createClassroom"

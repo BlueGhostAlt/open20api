@@ -4,6 +4,7 @@ import { Context } from ".."
 import { State, Code, ID } from "../State"
 
 import { randomInt } from "../utils/randomInt"
+import { keys } from "../utils/keys"
 
 interface createCodeOptions {
     name: string
@@ -15,6 +16,10 @@ interface useCodeOptions {
     state: State
     id: ID
 }
+interface freeCodeOptions {
+    code: Code
+    state: State
+}
 interface createClassroomOptions {
     ws: WebSocket
     data: Context["data"]
@@ -24,6 +29,11 @@ interface createClassroomOptions {
 interface joinClassroomOptions {
     ws: WebSocket
     data: Context["data"]
+    state: State
+    id: ID
+}
+interface deleteClassroomOptions {
+    ws: WebSocket
     state: State
     id: ID
 }
@@ -48,6 +58,12 @@ const useCode = ({ code, state, id }: useCodeOptions): boolean => {
     }
 
     return false
+}
+
+const freeCode = ({ code, state }: freeCodeOptions): void => {
+    delete state.codes[code]
+
+    freeCodes.push(code)
 }
 
 export const createClassroom = ({
@@ -85,4 +101,22 @@ export const joinClassroom = ({
     const name = state.codes[code].name
 
     return { hasJoined, code, name }
+}
+
+export const deleteClassroom = ({
+    ws,
+    state,
+    id
+}: deleteClassroomOptions): number[] => {
+    const ownedCodes = Object.entries(state.codes)
+        .filter(([_, { host }]) => host === id)
+        .map(([code, _]) => Number(code))
+
+    const affectedGuests = Object.keys(state.codes)
+        .map(Number)
+        .filter(e => ownedCodes.includes(e))
+        .map(code => state.codes[code].guests)
+        .reduce((acc, val) => acc.concat(val), [])
+
+    return affectedGuests
 }

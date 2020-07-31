@@ -37,4 +37,14 @@ wss.on("connection", ws => {
             ws.send("Something went wrong ):")
         }
     })
+
+    ws.on("close", (_, __) => {
+        try {
+            const { deleteClassroom } = handlers
+
+            deleteClassroom({ ws, state, id })
+        } catch {
+            console.info("Oops! Something went wrong")
+        }
+    })
 })
