@@ -1,9 +1,9 @@
 import WebSocket from "ws"
 
-import { Context } from ".."
-import { State, Code, ID } from "../State"
+import { Context } from "../.."
+import { State, Code, ID } from "../../State"
 
-import { randomInt } from "../utils/randomInt"
+import { randomInt } from "../../utils/randomInt"
 
 interface createCodeOptions {
     name: string

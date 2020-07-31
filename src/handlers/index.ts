@@ -2,4 +2,4 @@ export {
     createClassroom,
     joinClassroom,
     deleteClassroom
-} from "./createClassroom"
+} from "./message/createClassroom"
