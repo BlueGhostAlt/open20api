@@ -22,12 +22,12 @@ export const createClassroom = (
     ws: WebSocket,
     data: Context["data"],
     state: State
-): string => {
+): { code: string } => {
     const { name } = data as { name: string }
 
     const code = useCode(name, state)
 
     const strCode = String(code).padStart(6, "0")
 
-    return strCode
+    return { code: strCode }
 }

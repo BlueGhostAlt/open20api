@@ -22,10 +22,11 @@ wss.on("connection", ws => {
             const request = message.toString()
 
             const parsed: Context = JSON.parse(request)
+            const result = handlers[parsed.type](ws, parsed.data, state)
 
-            const response = handlers[parsed.type](ws, parsed.data, state)
+            const response: Context = { type: parsed.type, data: result }
 
-            ws.send(response)
+            ws.send(JSON.stringify(response))
         } catch {
             console.info("Oops! Something went wrong")
 
