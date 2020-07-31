@@ -17,11 +17,9 @@ interface createClassroomOptions {
     id: ID
 }
 
-export const freeCodes = Array(1000000)
-    .fill(undefined)
-    .map((_, i) => i)
-
 const createCode = ({ name, state, id }: createCodeOptions): number => {
+    const { freeCodes } = state
+
     const code = freeCodes[randomInt(0, freeCodes.length)]
 
     freeCodes.splice(code, 1)

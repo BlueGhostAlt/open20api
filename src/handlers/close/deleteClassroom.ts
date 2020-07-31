@@ -2,8 +2,6 @@ import WebSocket from "ws"
 
 import { State, Code, ID } from "../../State"
 
-import { freeCodes } from "../message/createClassroom"
-
 interface freeCodeOptions {
     code: Code
     state: State
@@ -17,7 +15,7 @@ interface deleteClassroomOptions {
 const freeCode = ({ code, state }: freeCodeOptions): void => {
     delete state.codes[code]
 
-    freeCodes.push(code)
+    state.freeCodes.push(code)
 }
 
 export const deleteClassroom = ({

@@ -11,4 +11,5 @@ export type State = {
     codes: Record<Code, { name: string; host: ID; guests: ID[]; memes: Meme[] }>
 } & {
     lastId: ID
+    freeCodes: number[]
 }

@@ -14,7 +14,10 @@ export interface Context {
     data: object
 }
 
-const state: State = { codes: {}, lastId: 0 }
+const freeCodes = Array(1000000)
+    .fill(undefined)
+    .map((_, i) => i)
+const state: State = { codes: {}, lastId: 0, freeCodes }
 
 wss.on("connection", ws => {
     const id = state.lastId++
