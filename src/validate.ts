@@ -31,6 +31,10 @@ export const validate = (ctx: Context): boolean => {
         const { id } = data as { id: number }
 
         return isSafeNumber(id)
+    } else if (type === "setLocked") {
+        const { isLocked } = data as { isLocked: boolean }
+
+        return typeof isLocked === "boolean"
     }
 
     return false
