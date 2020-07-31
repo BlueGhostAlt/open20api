@@ -9,6 +9,9 @@ const wss = new WebSocket.Server({ port }, () =>
 import * as handlers from "./handlers"
 import { state } from "./State"
 
+// eslint-disable-next-line import/no-cycle
+import { validate } from "./validate"
+
 export interface Context {
     type: keyof typeof handlers
     data: object
@@ -29,6 +32,11 @@ wss.on("connection", ws => {
 
             const parsed: Context = JSON.parse(request)
             const { type, data } = parsed
+
+            const isValid = validate(parsed)
+            if (!isValid) {
+                ws.terminate()
+            }
 
             const result = handlers[parsed.type]({ ws, data, state, id })
 
