@@ -14,9 +14,14 @@ export interface Context {
     data: object
 }
 
+const isAlive = new Map<WebSocket, boolean>()
+const noop = () => {}
+
 wss.on("connection", ws => {
     const id = state.lastId++
     state.sockets.set(id, ws)
+
+    isAlive.set(ws, true)
 
     ws.on("message", message => {
         try {
@@ -46,4 +51,19 @@ wss.on("connection", ws => {
             console.info("Oops! Something went wrong")
         }
     })
+
+    ws.on("pong", () => isAlive.set(ws, true))
+})
+
+const interval = setInterval(() => {
+    wss.clients.forEach(ws => {
+        if (!isAlive.get(ws)) return ws.terminate()
+
+        isAlive.set(ws, false)
+        ws.ping(noop)
+    })
+}, 5000)
+
+wss.on("close", () => {
+    clearInterval(interval)
 })
