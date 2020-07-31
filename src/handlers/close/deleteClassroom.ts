@@ -35,5 +35,7 @@ export const deleteClassroom = ({
         .map(code => state.codes[code].guests)
         .reduce((acc, val) => acc.concat(val), [])
 
+    ownedCodes.forEach(code => freeCode({ code, state }))
+
     return affectedGuests
 }
