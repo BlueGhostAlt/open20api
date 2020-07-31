@@ -70,7 +70,7 @@ const interval = setInterval(() => {
         isAlive.set(ws, false)
         ws.ping(noop)
     })
-}, 5000)
+}, 30 * 1000)
 
 wss.on("close", () => {
     clearInterval(interval)
