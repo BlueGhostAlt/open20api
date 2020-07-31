@@ -10,7 +10,7 @@ interface setLockedOptions {
     id: ID
 }
 
-export const setLocked = ({ ws, data, state, id }: setLockedOptions): void => {
+export const setLocked = ({ ws, data, state, id }: setLockedOptions): {} => {
     const { isLocked } = data as { isLocked: boolean }
 
     const classroomCode = Object.entries(state.codes).find(
@@ -35,4 +35,6 @@ export const setLocked = ({ ws, data, state, id }: setLockedOptions): void => {
             })
         )
     )
+
+    return {}
 }
