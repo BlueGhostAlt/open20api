@@ -5,7 +5,9 @@ import { State } from "../State"
 
 import { randomInt } from "../utils/randomInt"
 
-const freeCodes = Array(1000000).map((_, i) => i)
+const freeCodes = Array(1000000)
+    .fill(undefined)
+    .map((_, i) => i)
 
 const useCode = (name: string, state: State): number => {
     const code = freeCodes[randomInt(0, freeCodes.length)]
